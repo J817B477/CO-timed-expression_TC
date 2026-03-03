@@ -1,0 +1,37 @@
+SAMPLES:
+  - CO4hr_APAP24hr_1
+  - CO4hr_APAP24hr_1_1
+  - CO24hr_3
+  - CO24hr_2
+  - CO24hr_1
+  - 24hr_Control_3
+  - 24hr_Control_2
+  - 24hr_Control_1
+  - CO-4hr_+_APAP_3
+  - CO-4hr_+_APAP_2
+  - CO-4hr_+_APAP_1
+  - CO-8hr_+_APAP_3
+  - CO-8hr_+_APAP_2
+  - CO-8hr_+_APAP_1
+  - CO_4hr_3
+  - CO_4hr_2
+  - CO_4hr_1
+  - APAP_4hr_3
+  - APAP_4hr_2
+  - APAP_4hr_1
+  - Control_3_sample_3
+  - Control_2_sample_2
+  - Control_1_sample_1
+
+READ_TYPE: SE
+RAW_DIR: raw_fastqs
+RAWQC_DIR: raw_fastqc_reports
+TRIMMED_DIR: trimmed_fastqs
+BAM_DIR: bams
+COUNTS_DIR: counts
+DE_DIR: de_analysis
+GM_DIR: gm_analysis
+REF: 
+  fasta: ~/genomeRefs/hg38/hg38.fa
+  gtf: ~/genomeRefs/hg38/gencode.v38.annotation.gtf
+CONDA: CO-timed-expression

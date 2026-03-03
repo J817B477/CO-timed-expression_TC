@@ -1,0 +1,6 @@
+.snakemake/
+bams/
+raw_fastqc_reports/
+raw_fastqs/
+trimmed_fastqc_reports/
+trimmed_fastqs/

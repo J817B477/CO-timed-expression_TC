@@ -1,0 +1,15 @@
+Status	bams/CO4hr_APAP24hr_1.sorted.bam	bams/CO4hr_APAP24hr_1_1.sorted.bam	bams/CO24hr_3.sorted.bam	bams/CO24hr_2.sorted.bam	bams/CO24hr_1.sorted.bam	bams/24hr_Control_3.sorted.bam	bams/24hr_Control_2.sorted.bam	bams/24hr_Control_1.sorted.bam	bams/CO-4hr_+_APAP_3.sorted.bam	bams/CO-4hr_+_APAP_2.sorted.bam	bams/CO-4hr_+_APAP_1.sorted.bam	bams/CO-8hr_+_APAP_3.sorted.bam	bams/CO-8hr_+_APAP_2.sorted.bam	bams/CO-8hr_+_APAP_1.sorted.bam	bams/CO_4hr_3.sorted.bam	bams/CO_4hr_2.sorted.bam	bams/CO_4hr_1.sorted.bam	bams/APAP_4hr_3.sorted.bam	bams/APAP_4hr_2.sorted.bam	bams/APAP_4hr_1.sorted.bam	bams/Control_3_sample_3.sorted.bam	bams/Control_2_sample_2.sorted.bam	bams/Control_1_sample_1.sorted.bam
+Assigned	79368	84232	381897	390837	234648	755052	732279	425892	495943	840501	708656	608486	654455	1336174	1375317	590344	995900	1624497	1095429	1660420	1523291	1346317	1012786
+Unassigned_Unmapped	2792	2650	4646	4670	4473	6913	5764	8590	4869	8883	6097	5333	10905	9528	8461	8894	7344	12161	12328	11779	16537	12002	8073
+Unassigned_Read_Type	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0
+Unassigned_Singleton	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0
+Unassigned_MappingQuality	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0
+Unassigned_Chimera	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0
+Unassigned_FragmentLength	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0
+Unassigned_Duplicate	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0
+Unassigned_MultiMapping	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0
+Unassigned_Secondary	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0
+Unassigned_NonSplit	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0
+Unassigned_NoFeatures	15858	18185	66015	69502	46845	170418	163235	98352	111294	190299	144039	119947	124437	265014	311483	137070	230758	367055	250157	356267	379097	294455	236069
+Unassigned_Overlapping_Length	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0
+Unassigned_Ambiguity	7662	8177	40585	40627	23609	75499	73537	43372	49136	82888	70125	60716	66916	134613	141776	59880	100923	158740	105796	161740	149650	134868	99573
