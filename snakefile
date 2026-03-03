@@ -16,9 +16,8 @@ SAMPLES = config["SAMPLES"]
 # target rule that drives the production of pipeline
 rule all:
   input: 
-    "de_analysis/de_tpm_counts.csv"
-
-
+    "de_analysis/fullDE_tpm_counts.csv",
+    "de_analysis/sigDE_tpm_counts.csv"
 #\/\/\/\/\/move down at end of development\/\/\/\/\/
 # rule wgcna:
 #   input:
@@ -176,7 +175,8 @@ rule differential_expression:
   input:
     "de_analysis/tpm_counts.csv"
   output:
-    "de_analysis/de_tpm_counts.csv"
+    "de_analysis/fullDE_tpm_counts.csv",
+    "de_analysis/sigDE_tpm_counts.csv"
   script:
     "scripts/DEanalysis.R"
 
