@@ -1,6 +1,6 @@
 SAMPLES:
   - CO4hr_APAP24hr_1
-  - CO4hr_APAP24hr_1_1
+  - CO4hr_APAP24hr_2
   - CO24hr_3
   - CO24hr_2
   - CO24hr_1
@@ -33,5 +33,5 @@ DE_DIR: de_analysis
 GM_DIR: gm_analysis
 REF: 
   fasta: ~/genomeRefs/hg38/hg38.fa
-  gtf: ~/genomeRefs/hg38/gencode.v38.annotation.gtf
+  gtf: ~/genomeRefs/hg38/gencode.v47.basic.annotation.gtf
 CONDA: CO-timed-expression
