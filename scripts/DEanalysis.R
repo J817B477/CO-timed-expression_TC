@@ -56,7 +56,7 @@ coldata = data.frame(
   apap_time = factor(apap_time, levels = time_factor_levels),
   replicate = factor(replicate)
 )
-
+write.csv(coldata, file = "de_analysis/coldata.csv", row.names = TRUE)
 #~~~~~~~~~~~~~~~~~~~~~~~Experimental Group Analysis~~~~~~~~~~~~~~~~~~~~~~~#
 
 #######################################################
@@ -121,7 +121,6 @@ dev.off()
 de_dds_treatment = DESeq(dds_treatment)
 
 contrast_groups = resultsNames(de_dds_treatment)[-1]
-cat("\nTreatment Contrast Names:\n",contrast_groups, '\n')
 
 res_df_list = list()
 for(contrast in contrast_groups){
@@ -134,20 +133,20 @@ for(contrast in contrast_groups){
 
   res_df$significance[is.na(res_df$significance)] = "not significant" 
 
-  plot_name = paste0("de_analysis/treatment_", contrast, "_volcano_plot.pdf")
+  plot_name = paste0("de_analysis/", contrast, "_volcano_plot.pdf")
 
   pdf(plot_name, width = 7, height = 5)
-  ggplot(res_df, aes(x = log2FoldChange, y = -log10(padj))) +
-    labs(title = "Volcano Plot: Differentially Expressed Genes",
-        subtitle = paste0("Experimental Contrast: ", contrast),
-        x = expression(log[2]*(fold~change)),
-        y = expression(-log[10]*(Adj.~P-value))
-    ) +
-    geom_point(aes(color = significance), alpha = 0.4, size = 1.5) +
-    scale_color_manual(values = c("upregulated" = "red", 
-                                  "downregulated" = "#145291", 
-                                  "not significant" = "grey")) +
-    theme_minimal()
+    print(ggplot(res_df, aes(x = log2FoldChange, y = -log10(padj))) +
+      labs(title = "Volcano Plot: Differentially Expressed Genes",
+          subtitle = paste0("Experimental Contrast: ", contrast),
+          x = expression(log[2]*(fold~change)),
+          y = expression(-log[10]*(Adj.~P-value))
+      ) +
+      geom_point(aes(color = significance), alpha = 0.4, size = 1.5) +
+      scale_color_manual(values = c("upregulated" = "red", 
+                                    "downregulated" = "#145291", 
+                                    "not significant" = "grey")) +
+      theme_minimal())
   dev.off()
 
   contrast_str = sub("treatment_","",contrast)
@@ -155,9 +154,13 @@ for(contrast in contrast_groups){
   res_df_list[[contrast_str]] = res_df
 }
 
-res_df_treatment = do.call(cbind, res_df_list)
+res_df_treatment = do.call(cbind, lapply(res_df_list, function(df) df[, -1]))
 colnames(res_df_treatment) = paste0("groupTest_", colnames(res_df_treatment))
 res_df_treatment$Geneid <- rownames(res_df_list[[1]])
+
+
+
+
 #~~~~~~~~~~~~~~~~~~~~~Treatment Interaction Analysis~~~~~~~~~~~~~~~~~~~~~#
 
 
@@ -234,7 +237,7 @@ dev.off()
 de_dds_interaction = DESeq(dds_interaction)
 
 contrast_groups = resultsNames(de_dds_interaction)[-1]
-cat("\nTreatment Contrast Names:\n",contrast_groups, '\n')
+
 
 res_df_list = list()
 for(contrast in contrast_groups){
@@ -250,40 +253,38 @@ for(contrast in contrast_groups){
   plot_name = paste0("de_analysis/interaction_", contrast, "_volcano_plot.pdf")
 
   pdf(plot_name, width = 7, height = 5)
-  ggplot(res_df, aes(x = log2FoldChange, y = -log10(padj))) +
-    labs(title = "Volcano Plot: Differentially Expressed Genes",
-        subtitle = paste0("Experimental Contrast: ", contrast),
-        x = expression(log[2]*(fold~change)),
-        y = expression(-log[10]*(Adj.~P-value))
-    ) +
-    geom_point(aes(color = significance), alpha = 0.4, size = 1.5) +
-    scale_color_manual(values = c("upregulated" = "red", 
-                                  "downregulated" = "#145291", 
-                                  "not significant" = "grey")) +
-    theme_minimal()
+  print(ggplot(res_df, aes(x = log2FoldChange, y = -log10(padj))) +
+      labs(title = "Volcano Plot: Differentially Expressed Genes",
+          subtitle = paste0("Experimental Contrast: ", contrast),
+          x = expression(log[2]*(fold~change)),
+          y = expression(-log[10]*(Adj.~P-value))
+      ) +
+      geom_point(aes(color = significance), alpha = 0.4, size = 1.5) +
+      scale_color_manual(values = c("upregulated" = "red", 
+                                    "downregulated" = "#145291", 
+                                    "not significant" = "grey")) +
+      theme_minimal())
   dev.off()
 
   res_df_list[[contrast]] = res_df
 }
 
-res_df_interaction = do.call(cbind, res_df_list)
+res_df_interaction = do.call(cbind, lapply(res_df_list, function(df) df[, -1]))
 colnames(res_df_interaction) = paste0("interactionTest_", colnames(res_df_interaction))
 res_df_interaction$Geneid <- rownames(res_df_list[[1]])
 
 #~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~Combining Results~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~#
 
-# augments counts_df with treatment group DE results data
 
+# joins counts with treatment group DE results data
 de_counts_df =  merge(counts_df, res_df_treatment,
                    by = "Geneid",
                    all = TRUE)
 
+# joins counts and group DE results data with interaction DE results
 de_counts_df =  merge(de_counts_df, res_df_interaction,
                    by = "Geneid",
                    all = TRUE)
-
-print("Final Col Names:") 
-print(colnames(de_counts_df))
 
 
 ## sort rows by padj values
