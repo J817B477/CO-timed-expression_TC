@@ -2,7 +2,7 @@
 configfile: "config.yml"
 
 # library dependencies
-# import yaml
+import os
 
 # gets dynamically generated trim parameters from yml file
 # def load_trim_params():
@@ -20,14 +20,7 @@ rule all:
     "de_analysis/sigDE_tpm_counts.csv",
     "raw_fastqc_reports/multiqc_report.html",
     "trimmed_fastqc_reports/multiqc_report.html"
-#\/\/\/\/\/move down at end of development\/\/\/\/\/
-# rule wgcna:
-#   input:
-#     "de_analysis/counts_matrix.csv",
-#     "de_analysis/tpm_counts.csv",
-#     "de_analysis/coldata.csv"
-#   script:
-#     "scripts/WGCNAnalysis.R"
+
 
 # creates sample level quality reports for automated trimming decisions
 rule raw_qc:
@@ -49,9 +42,7 @@ rule raw_multiqc:
   input:
     expand("raw_fastqc_reports/{sample}_fastqc/fastqc_data.txt", sample = SAMPLES)
   output:
-    html = "raw_fastqc_reports/multiqc_report.html",
-    # perbase = "raw_fastqc_reports/multiqc_data/fastqc_per_base_sequence_quality_plot.txt",
-    # multiqc_seq_len = 'raw_fastqc_reports/multiqc_data/fastqc_sequence_length_distribution_plot.txt'
+    html = "raw_fastqc_reports/multiqc_report.html"
   shell: 
     """
     multiqc raw_fastqc_reports -o raw_fastqc_reports --force
@@ -81,16 +72,6 @@ rule raw_trim:
     trimmed="trimmed_fastqs/trimmed_{sample}.fastq.gz",
     html = "trimmed_fastp_reports/{sample}_fastp.html",
     json = "trimmed_fastp_reports/{sample}_fastp.json"
-  # params:
-  #   read_type = config["READ_TYPE"],
-  #   # trim_calls = load_trim_params(),
-  #   polyA=lambda wildcards: load_trim_params().get("polyA", ""),
-  #   polyG=lambda wildcards: load_trim_params().get("polyG", ""),
-  #   adapter=lambda wildcards: load_trim_params().get("adapter", ""),
-  #   headcrop=lambda wildcards: load_trim_params().get("headcrop", ""),
-  #   crop=lambda wildcards: load_trim_params().get("crop", ""),
-  #   sliding_window=lambda wildcards: load_trim_params().get("sliding_window", ""),
-  #   minlen=lambda wildcards: load_trim_params().get("minlen", "")
   threads: 8
   
   shell:
@@ -98,24 +79,13 @@ rule raw_trim:
     fastp -i {input.raw} -o {output.trimmed} \
               --adapter_fasta {input.custom_fa} \
               --trim_poly_g --trim_poly_x \
-              --cut_right --cut_right_window_size 4 --cut_right_mean_quality 20 \
+              --cut_right --cut_right_mean_quality 15 \
               --cut_front --cut_tail \
-              -l 36 \
+              -l 50 \
               --html {output.html} \
               --json {output.json} \
               --thread {threads}
     """
-    # """
-    # {params.polyA}
-    # {params.polyG}
-
-    # trimmomatic {params.read_type} -phred33 {input.raw} {output.trimmed} \
-    # {params.adapter} \
-    # {params.headcrop} \
-    # {params.crop} \
-    # {params.sliding_window} \
-    # {params.minlen}
-    # """
 
 
 # creates sample level quality reports on trimmed data
@@ -125,8 +95,6 @@ rule trimmed_qc:
   output:
     txt = 'trimmed_fastqc_reports/trimmed_{sample}_fastqc/fastqc_data.txt',
     html = 'trimmed_fastqc_reports/trimmed_{sample}_fastqc/fastqc_report.html'
-
-    # raw_fastqc_reports/{sample}_fastqc/fastqc_data.txt
   shell:
     """
     #creates output files
@@ -147,43 +115,97 @@ rule trimmed_multiqc:
     multiqc trimmed_fastqc_reports -o trimmed_fastqc_reports --force
     """
 
-#creates BAM alignment file using BWA MEM software for alignment
-rule align_reads:
+rule star_index:
   input:
-    trimmed_fq = "trimmed_fastqs/trimmed_{sample}.fastq.gz"
+    fasta = os.path.expanduser(config["REF"]["fasta"]),
+    gtf   = os.path.expanduser(config["REF"]["gtf"])
   output:
-    out = "bams/{sample}.sorted.bam"
+    directory("star_index")
   params:
-    ref_genome = config["REF"]["fasta"]
-  threads: 8
+    index_dir = "star_index"
+  threads: 4
   shell:
     """
-    bwa mem -t {threads} {params.ref_genome} {input.trimmed_fq}\
-    | samtools view -bS - \
-    | samtools sort -@{threads} -o {output.out}
+    mkdir -p {params.index_dir}
 
-    samtools index {output.out}
+    STAR --runThreadN {threads} \
+         --runMode genomeGenerate \
+         --genomeDir {params.index_dir} \
+         --genomeFastaFiles {input.fasta} \
+         --sjdbGTFfile {input.gtf} \
+         --sjdbOverhang 49
     """
 
+#creates BAM alignment file using STAR software for alignment
+rule align_reads:
+  input:
+    trimmed_fq = "trimmed_fastqs/trimmed_{sample}.fastq.gz",
+    index = "star_index"
+  output:
+    out = "bams/{sample}.sorted.bam"
+  threads: 1
+
+  shell:
+    """
+    STAR --runThreadN {threads} \
+         --genomeDir {input.index} \
+         --readFilesIn {input.trimmed_fq} \
+         --readFilesCommand zcat \
+         --outSAMtype BAM SortedByCoordinate \
+         --outFilterIntronMotifs RemoveNoncanonical \
+         --outFileNamePrefix bams/{wildcards.sample}_
+
+    mv bams/{wildcards.sample}_Aligned.sortedByCoord.out.bam {output.out}
+    samtools index {output.out}
+    """
+########### Start here: need to establish stranding #####
+rule infer_strand:
+  input:
+    bam = "bams/{sample}.sorted.bam",
+    bed = os.path.expanduser(config["REF"]["bed"])
+  output:
+    "strand/{sample}.strand.txt"
+  threads: 2
+  shell:
+    """
+    infer_experiment.py \
+      -r {input.bed} \
+      -i {input.bam} \
+      > {output}
+    """
+
+rule summarize_strand:
+  input:
+    expand("strand/{sample}.strand.txt", sample=SAMPLES)
+  output:
+    "strand_summary.txt"
+  script:
+    "scripts/infer_strand.py"
+    
 # establishes single counts matrix from bam alignment files
 rule get_counts:
   input:
-    bams = expand("bams/{sample}.sorted.bam", sample = SAMPLES)
+    bams = expand("bams/{sample}.sorted.bam", sample = SAMPLES),
+    strand = "strand_summary.txt"
   output:
     counts = "counts.txt"
   params:
     ref_genome = config["REF"]["gtf"]
   threads: 2
-  shell:
-    """
+  run:
+    with open(input.strand) as f:
+        strand = f.read().strip()
+
+    shell(f"""
     featureCounts \
     -T {threads} \
     -a {params.ref_genome} \
     -t exon \
     -g gene_id \
-    -o {output.counts} \
-    {input.bams}
-    """
+    -s {strand}\
+    -M --fraction \
+    -o {output.counts} {' '.join(input.bams)}
+    """)
 # cleans the sample identifiers and generates version of counts dataframes
 rule clean_counts:
   input:
@@ -203,7 +225,4 @@ rule differential_expression:
     "de_analysis/sigDE_tpm_counts.csv"
   script:
     "scripts/DEanalysis.R"
-
-
-# establishes correlated gene activity suggestive of interrelated gene function
 

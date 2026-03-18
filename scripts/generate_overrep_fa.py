@@ -37,15 +37,9 @@ for sample in sampleQC_list:
     
     temp_df = pd.read_csv(StringIO(overrep_module), 
                           sep='\t')
-    print(temp_df.columns.tolist())
     temp_df["sample"] = sample_name
     
     overrep_df = pd.concat([overrep_df,temp_df], axis = 0, ignore_index=True)
-
-print(f"""
-dataframe:
-{overrep_df}
-""")
 
 #---- defines overep fastA strings ----#
 if not overrep_df.empty and 'Possible Source' in overrep_df.columns:
@@ -93,6 +87,5 @@ with open(snakemake.output.custom_fa, "w") as f:
         f.write(f">contaminant_{i}\n{seq}\n")
 
   else:
-    # Fastp is fine with a totally empty file, but 
     # writing a comment prevents some parsers from complaining.
     f.write("# No non-human overrepresented sequences found\n")

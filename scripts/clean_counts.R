@@ -22,9 +22,7 @@ new_colnames= c(
 "CO_4hr_1","APAP_4hr_3",
 "APAP_4hr_2","APAP_4hr_1",
 "Control_3","Control_2",
-"Control_1", 'sample_22',
-'sample_23', 'sample_24',
-'sample_25'
+"Control_1"
 )
 write.csv(cbind(old_colnames, new_colnames), "updated_sampleNames_map.csv")
 colnames(counts_df) = new_colnames

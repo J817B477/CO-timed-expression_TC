@@ -22,10 +22,6 @@ SAMPLES:
   - Control_3_sample_3
   - Control_2_sample_2
   - Control_1_sample_1
-  - sample_22
-  - sample_23
-  - sample_24
-  - sample_25
 
 READ_TYPE: SE
 RAW_DIR: raw_fastqs
@@ -38,4 +34,5 @@ GM_DIR: gm_analysis
 REF: 
   fasta: ~/genomeRefs/hg38/hg38.fa
   gtf: ~/genomeRefs/hg38/gencode.v47.basic.annotation.gtf
+  bed: ~/genomeRefs/hg38/gencode.v47.basic.annotation.bed
 CONDA: CO-timed-expression

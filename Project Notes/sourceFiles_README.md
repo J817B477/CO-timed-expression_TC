@@ -1,0 +1,11 @@
+- computation resources for pipeline as configured in snakemake
+  - 24 core i7 intel processor
+  - 64 gb of ram 
+  - 16 cores allocated to snakemake call
+  - max of 8 thread allocated to supportinve jobs
+  - min of 1 thread for alignment using star 
+
+- fasta: ~/genomeRefs/hg38/hg38.fa
+- gtf: ~/genomeRefs/hg38/gencode.v47.basic.annotation.gtf
+- bed: ~/genomeRefs/hg38/gencode.v47.basic.annotation.bed
+  - generated from hg38 gencode version 47 gtf using gtf2bed of bedops library 2.4.42
