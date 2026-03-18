@@ -1,15 +1,15 @@
-Status	bams/CO4hr_APAP24hr_1.sorted.bam	bams/CO4hr_APAP24hr_2.sorted.bam	bams/CO24hr_3.sorted.bam	bams/CO24hr_2.sorted.bam	bams/CO24hr_1.sorted.bam	bams/24hr_Control_3.sorted.bam	bams/24hr_Control_2.sorted.bam	bams/24hr_Control_1.sorted.bam	bams/CO-4hr_+_APAP_3.sorted.bam	bams/CO-4hr_+_APAP_2.sorted.bam	bams/CO-4hr_+_APAP_1.sorted.bam	bams/CO-8hr_+_APAP_3.sorted.bam	bams/CO-8hr_+_APAP_2.sorted.bam	bams/CO-8hr_+_APAP_1.sorted.bam	bams/CO_4hr_3.sorted.bam	bams/CO_4hr_2.sorted.bam	bams/CO_4hr_1.sorted.bam	bams/APAP_4hr_3.sorted.bam	bams/APAP_4hr_2.sorted.bam	bams/APAP_4hr_1.sorted.bam	bams/Control_3_sample_3.sorted.bam	bams/Control_2_sample_2.sorted.bam	bams/Control_1_sample_1.sorted.bam
-Assigned	76669	81462	371941	379850	228556	733136	712013	413669	480787	814843	687076	589337	635464	1297211	1336548	572453	966490	1575809	1062509	1610846	1477074	1307254	980840
-Unassigned_Unmapped	2792	2650	4646	4670	4473	6913	5764	8590	4869	8883	6097	5333	10905	9528	8461	8894	7344	12161	12328	11779	16537	12002	8073
-Unassigned_Read_Type	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0
-Unassigned_Singleton	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0
-Unassigned_MappingQuality	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0
-Unassigned_Chimera	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0
-Unassigned_FragmentLength	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0
-Unassigned_Duplicate	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0
-Unassigned_MultiMapping	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0
-Unassigned_Secondary	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0
-Unassigned_NonSplit	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0
-Unassigned_NoFeatures	16123	18138	67059	70629	47461	173641	166378	99998	113775	194490	147312	121703	125770	270270	315733	139006	234413	372773	253353	361629	386355	298403	240254
-Unassigned_Overlapping_Length	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0
-Unassigned_Ambiguity	10096	10994	49497	50487	29085	94192	90660	53949	61811	104355	88432	78109	84574	168320	176295	75835	126678	201710	135520	205952	188609	169983	127334
+Status	bams/CO4hr_APAP24hr_1.sorted.bam	bams/CO4hr_APAP24hr_2.sorted.bam	bams/CO24hr_3.sorted.bam	bams/CO24hr_2.sorted.bam	bams/CO24hr_1.sorted.bam	bams/24hr_Control_3.sorted.bam	bams/24hr_Control_2.sorted.bam	bams/24hr_Control_1.sorted.bam	bams/CO-4hr_+_APAP_3.sorted.bam	bams/CO-4hr_+_APAP_2.sorted.bam	bams/CO-4hr_+_APAP_1.sorted.bam	bams/CO-8hr_+_APAP_3.sorted.bam	bams/CO-8hr_+_APAP_2.sorted.bam	bams/CO-8hr_+_APAP_1.sorted.bam	bams/CO_4hr_3.sorted.bam	bams/CO_4hr_2.sorted.bam	bams/CO_4hr_1.sorted.bam	bams/APAP_4hr_3.sorted.bam	bams/APAP_4hr_2.sorted.bam	bams/APAP_4hr_1.sorted.bam	bams/Control_3_sample_3.sorted.bam	bams/Control_2_sample_2.sorted.bam	bams/Control_1_sample_1.sorted.bam	bams/sample_22.sorted.bam	bams/sample_23.sorted.bam	bams/sample_24.sorted.bam	bams/sample_25.sorted.bam
+Assigned	78037	83167	381257	388389	233483	749215	729844	424274	491046	831115	699659	602738	648415	1323065	1363538	585127	988163	1607671	1086800	1648560	1510484	1336446	1003278	33585	37427	21926	56555
+Unassigned_Unmapped	2622	2566	4293	4324	4183	6008	5219	8127	4401	7904	5423	4780	10268	8116	7111	8246	6432	9928	11352	10175	14540	10701	7285	6442	3657	7224	2109
+Unassigned_Read_Type	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0
+Unassigned_Singleton	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0
+Unassigned_MappingQuality	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0
+Unassigned_Chimera	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0
+Unassigned_FragmentLength	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0
+Unassigned_Duplicate	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0
+Unassigned_MultiMapping	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0
+Unassigned_Secondary	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0
+Unassigned_NonSplit	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0
+Unassigned_NoFeatures	16069	17809	65566	69088	46669	171391	164336	98791	111915	191668	145235	120046	123468	264876	310954	137098	231595	366590	250331	356079	381123	294567	237586	12395	11333	7030	13593
+Unassigned_Overlapping_Length	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0
+Unassigned_Ambiguity	10905	11578	52548	53539	30827	99735	96229	57408	65207	110390	92980	81952	89417	177697	184883	80251	133762	212690	143443	218099	199430	179575	134716	4694	4974	3019	7452
