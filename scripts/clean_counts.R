@@ -4,12 +4,14 @@ counts_df = read.delim(snakemake@input[[1]], comment.char = "#", check.names = F
 
 
 # rename columns: removes files extensions, labeling be sample name only
-print(colnames(counts_df))
-colnames(counts_df) = c(
+old_colnames = colnames(counts_df)
+
+
+new_colnames= c(
 "Geneid","Chr",
 "Start","End",
 "Strand","Length",
-"CO_4hr_APAP_24hr_1","CO_4hr_APAP_24hr_1_1",
+"CO_4hr_APAP_24hr_1","CO_4hr_APAP_24hr_2",
 "CO_24hr_3","CO_24hr_2",
 "CO_24hr_1","Control_24hr_3",
 "Control_24hr_2","Control_24hr_1",
@@ -22,8 +24,8 @@ colnames(counts_df) = c(
 "Control_3","Control_2",
 "Control_1"
 )
-
-print(colnames(counts_df))
+write.csv(cbind(old_colnames, new_colnames), "updated_sampleNames_map.csv")
+colnames(counts_df) = new_colnames
 
 # remove metatadata from counts matrix: keeps only sample raw counts and geneids
 counts_matrix = counts_df[, c(1, 7:ncol(counts_df))]
