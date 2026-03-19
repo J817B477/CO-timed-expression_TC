@@ -7,5 +7,6 @@
 
 - fasta: ~/genomeRefs/hg38/hg38.fa
 - gtf: ~/genomeRefs/hg38/gencode.v47.basic.annotation.gtf
-- bed: ~/genomeRefs/hg38/gencode.v47.basic.annotation.bed
+- bed: ~/genomeRefs/hg38/gencode.v47.annotation.bed
   - generated from hg38 gencode version 47 gtf using gtf2bed of bedops library 2.4.42
+- trwget --content-disposition ftp://ftp.ccb.jhu.edu/pub/infphilo/hisat2/data/grch38_tran.tar.gz

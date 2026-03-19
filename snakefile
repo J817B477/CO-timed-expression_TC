@@ -115,47 +115,50 @@ rule trimmed_multiqc:
     multiqc trimmed_fastqc_reports -o trimmed_fastqc_reports --force
     """
 
-rule star_index:
-  input:
-    fasta = os.path.expanduser(config["REF"]["fasta"]),
-    gtf   = os.path.expanduser(config["REF"]["gtf"])
-  output:
-    directory("star_index")
-  params:
-    index_dir = "star_index"
-  threads: 4
-  shell:
-    """
-    mkdir -p {params.index_dir}
+# rule hisat_index:
+#   input:
+#     fasta = os.path.expanduser(config["REF"]["fasta"]),
+#     gtf   = os.path.expanduser(config["REF"]["gtf"])
+#   output:
+#     expand("hisat_index/genome.{i}.ht2", i=range(1,9))
+#   params:
+#     index_prefix = "hisat_index/genome",
+#     index_dir = "hisat_index"
+#   shell:
+#     """
+#     mkdir -p {params.index_dir}
 
-    STAR --runThreadN {threads} \
-         --runMode genomeGenerate \
-         --genomeDir {params.index_dir} \
-         --genomeFastaFiles {input.fasta} \
-         --sjdbGTFfile {input.gtf} \
-         --sjdbOverhang 49
-    """
+#     hisat2_extract_splice_sites.py {input.gtf} > {params.index_dir}/splicesites.txt
+#     hisat2_extract_exons.py {input.gtf} > {params.index_dir}/exons.txt
 
-#creates BAM alignment file using STAR software for alignment
+#     hisat2-build \
+#       --ss {params.index_dir}/splicesites.txt \
+#       --exon {params.index_dir}/exons.txt \
+#       {input.fasta} \
+#       {params.index_prefix}
+#     """
+
+#creates BAM alignment file using HISAT2 software for alignment
 rule align_reads:
   input:
     trimmed_fq = "trimmed_fastqs/trimmed_{sample}.fastq.gz",
-    index = "star_index"
-  output:
+    index = expand("hisat_index/grch38_tran/genome_tran.{i}.ht2", i=range(1,9)) 
+  output: 
     out = "bams/{sample}.sorted.bam"
-  threads: 1
+  params:
+     index_prefix = "hisat_index/grch38_tran/genome_tran"
+  threads: 8
 
   shell:
     """
-    STAR --runThreadN {threads} \
-         --genomeDir {input.index} \
-         --readFilesIn {input.trimmed_fq} \
-         --readFilesCommand zcat \
-         --outSAMtype BAM SortedByCoordinate \
-         --outFilterIntronMotifs RemoveNoncanonical \
-         --outFileNamePrefix bams/{wildcards.sample}_
-
-    mv bams/{wildcards.sample}_Aligned.sortedByCoord.out.bam {output.out}
+    hisat2 \
+      -p {threads} \
+      --dta \
+      --rna-strandness R \
+      -x {params.index_prefix} \
+      -U {input.trimmed_fq}| \
+  
+    samtools sort -@ {threads} -o {output.out}
     samtools index {output.out}
     """
 ########### Start here: need to establish stranding #####
@@ -203,7 +206,6 @@ rule get_counts:
     -t exon \
     -g gene_id \
     -s {strand}\
-    -M --fraction \
     -o {output.counts} {' '.join(input.bams)}
     """)
 # cleans the sample identifiers and generates version of counts dataframes

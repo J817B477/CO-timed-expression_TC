@@ -11,4 +11,8 @@
 
 2. DEanalysis.R:
     - generates test results for experimental group contrasts and exports them for secondary analysis
-    -  volcano plots for each contrast 
+    - visuals
+        - per test sample dist matrix heatmap and sample pca plot
+            - check group replicate proximity and separation
+        - volcano plots for each contrast 
+        -

@@ -32,7 +32,7 @@ COUNTS_DIR: counts
 DE_DIR: de_analysis
 GM_DIR: gm_analysis
 REF: 
-  fasta: ~/genomeRefs/hg38/hg38.fa
-  gtf: ~/genomeRefs/hg38/gencode.v47.basic.annotation.gtf
-  bed: ~/genomeRefs/hg38/gencode.v47.basic.annotation.bed
+  fasta: ~/genomeRefs/hg38/GRCh38.primary_assembly.genome.fa
+  gtf: ~/genomeRefs/hg38/gencode.v47.annotation.gtf
+  bed: ~/genomeRefs/hg38/gencode.v47.annotation.bed
 CONDA: CO-timed-expression
