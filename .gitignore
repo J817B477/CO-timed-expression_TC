@@ -4,4 +4,7 @@ raw_fastqc_reports/
 raw_fastqs/
 trimmed_fastqc_reports/
 trimmed_fastqs/
+trimmed_fastp_reports/
+hisat_index/grch38_tran/
+strand/
 *.csv
