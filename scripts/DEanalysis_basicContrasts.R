@@ -9,6 +9,7 @@ suppressPackageStartupMessages({
   library(org.Hs.eg.db)
 })
 
+dir.create("de_analysis/basicContrasts_plots-tables")
 ##############################################################
 #---- read in counts df and formats counts matrix object ----#
 ##############################################################
@@ -133,20 +134,27 @@ for(contrast in contrast_groups){
 
   res_df$significance[is.na(res_df$significance)] = "not significant" 
 
-  plot_name = paste0("de_analysis/", contrast, "_volcano_plot.pdf")
+  p <- ggplot(res_df, aes(x = log2FoldChange, y = -log10(padj))) +
+    labs(title = "Volcano Plot: Differentially Expressed Genes",
+        subtitle = paste0("Experimental Contrast: ", contrast),
+        x = expression(log[2]*(fold~change)),
+        y = expression(-log[10]*(Adj.~P-value))
+    ) +
+    geom_point(aes(color = significance), alpha = 0.4, size = 1.5) +
+    scale_color_manual(values = c("upregulated" = "red", 
+                                  "downregulated" = "#145291", 
+                                  "not significant" = "grey")) +
+    theme_minimal()
 
-  pdf(plot_name, width = 7, height = 5)
-    print(ggplot(res_df, aes(x = log2FoldChange, y = -log10(padj))) +
-      labs(title = "Volcano Plot: Differentially Expressed Genes",
-          subtitle = paste0("Experimental Contrast: ", contrast),
-          x = expression(log[2]*(fold~change)),
-          y = expression(-log[10]*(Adj.~P-value))
-      ) +
-      geom_point(aes(color = significance), alpha = 0.4, size = 1.5) +
-      scale_color_manual(values = c("upregulated" = "red", 
-                                    "downregulated" = "#145291", 
-                                    "not significant" = "grey")) +
-      theme_minimal())
+  pdf_plot_name = paste0("de_analysis/basicContrasts_plots-tables/", contrast, "_volcano_plot.pdf")
+
+  pdf(pdf_plot_name, width = 7, height = 5)
+  print(p)
+  dev.off()
+
+  svg_plot_name = paste0("de_analysis/basicContrasts_plots-tables/", contrast, "_volcano_plot.svg")
+  svg(svg_plot_name, width = 7, height = 5)
+  print(p)
   dev.off()
 
   contrast_str = sub("treatment_","",contrast)
@@ -248,14 +256,14 @@ for(contrast in contrast_groups){
                               ifelse(padj < 0.05 & log2FoldChange < 0, "downregulated",
                               "not significant")))
 
-  res_df$significance[is.na(res_df$significance)] = "not significant" 
+  res_df$significance[is.na(res_df$significance)] = "not significant"
 
-  plot_name = paste0("de_analysis/interaction_", contrast, "_volcano_plot.pdf")
 
-  pdf(plot_name, width = 7, height = 5)
-  print(ggplot(res_df, aes(x = log2FoldChange, y = -log10(padj))) +
+
+
+  p <- ggplot(res_df, aes(x = log2FoldChange, y = -log10(padj))) +
       labs(title = "Volcano Plot: Differentially Expressed Genes",
-          subtitle = paste0("Experimental Contrast: ", contrast),
+          subtitle = paste0("Interaction Contrast: ", contrast),
           x = expression(log[2]*(fold~change)),
           y = expression(-log[10]*(Adj.~P-value))
       ) +
@@ -263,7 +271,18 @@ for(contrast in contrast_groups){
       scale_color_manual(values = c("upregulated" = "red", 
                                     "downregulated" = "#145291", 
                                     "not significant" = "grey")) +
-      theme_minimal())
+      theme_minimal()
+
+  pdf_plot_name = paste0("de_analysis/basicContrasts_plots-tables/interaction_", contrast, "_volcano_plot.pdf")
+
+  pdf(pdf_plot_name, width = 7, height = 5)
+  print(p)
+  dev.off()
+
+  svg_plot_name = paste0("de_analysis/basicContrasts_plots-tables/interaction_", contrast, "_volcano_plot.svg")
+
+  svg(svg_plot_name, width = 7, height = 5)
+  print(p)
   dev.off()
 
   res_df_list[[contrast]] = res_df
