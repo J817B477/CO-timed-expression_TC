@@ -8,3 +8,4 @@ trimmed_fastp_reports/
 hisat_index/grch38_tran/
 strand/
 *.csv
+!de_analysis/*.csv
