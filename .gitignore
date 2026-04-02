@@ -9,3 +9,4 @@ hisat_index/grch38_tran/
 strand/
 *.csv
 !de_analysis/*.csv
+de_analysis/expandedContrasts_AllTestData_tpm_counts.csv
