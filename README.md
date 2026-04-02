@@ -8,7 +8,7 @@
     - more info [here](scripts/README_scriptsFolder.md)
 1. "coding_notebooks" directory:
     - folder that is reserved for coding notebooks where more narration and rationalization can articulated for decisions, results and justifications for next steps in the file
-    - more info [here](coding_notebooks/ReadMe_notebooks_.md)
+    - more info [here](coding_notebooks/ReadMe_notebooks.md)
 
 #### Additional Directories not tracked by this repository
 1. bams/
