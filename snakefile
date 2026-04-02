@@ -16,12 +16,10 @@ rule all:
     "trimmed_fastqc_reports/multiqc_report.html",
     expand("bams/{sample}.sorted.bam", sample = SAMPLES),
     expand("strand/{sample}.strand.txt", sample = SAMPLES),
-    "strand_summary.txt",
+    "strand_consensus.txt",
     "counts.txt",
     "de_analysis/counts_matrix.csv",
     "de_analysis/tpm_counts.csv",
-    "de_analysis/basicContrasts_fullDEG_tpm_counts.csv",
-    "de_analysis/basicContrasts_sigDEG_tpm_counts.csv",
     "de_analysis/expandedContrastsPADJ_tpm_counts.csv",
     "de_analysis/expandedContrastsL2FC_tpm_counts.csv",
     "de_analysis/expandedContrastsDIRECTION_tpm_counts.csv",
@@ -115,31 +113,31 @@ rule trimmed_multiqc:
     multiqc trimmed_fastqc_reports -o trimmed_fastqc_reports --force
     """
 
-
 #creates BAM alignment file using HISAT2 software for alignment
 rule align_reads:
   input:
     trimmed_fq = "trimmed_fastqs/trimmed_{sample}.fastq.gz",
-    index = expand("hisat_index/grch38_tran/genome_tran.{i}.ht2", i=range(1,9)) 
+    index = expand("hisat_index/grch38_tran/genome_tran.{i}.ht2", i=range(1,9)),
+    strand_txt = "strand_consensus.txt"
   output: 
     out = "bams/{sample}.sorted.bam"
   params:
-     index_prefix = "hisat_index/grch38_tran/genome_tran"
+    index_prefix = "hisat_index/grch38_tran/genome_tran",
   threads: 8
 
   shell:
-    """
+    """    
     hisat2 \
       -p {threads} \
       --dta \
-      --rna-strandness R \
       -x {params.index_prefix} \
       -U {input.trimmed_fq}| \
   
     samtools sort -@ {threads} -o {output.out}
     samtools index {output.out}
     """
-########### Start here: need to establish stranding #####
+
+# per sample library strand direction with rseqc facility "infer_experiment.py" 
 rule infer_strand:
   input:
     bam = "bams/{sample}.sorted.bam",
@@ -155,11 +153,12 @@ rule infer_strand:
       > {output}
     """
 
+# establishes consensus of strand direction across all sample libraries
 rule summarize_strand:
   input:
     expand("strand/{sample}.strand.txt", sample=SAMPLES)
   output:
-    "strand_summary.txt"
+    "strand_consensus.txt"
   script:
     "scripts/infer_strand.py"
     
@@ -167,25 +166,24 @@ rule summarize_strand:
 rule get_counts:
   input:
     bams = expand("bams/{sample}.sorted.bam", sample = SAMPLES),
-    strand = "strand_summary.txt"
+    strand_txt = "strand_consensus.txt"
   output:
     counts = "counts.txt"
   params:
-    ref_genome = config["REF"]["gtf"]
+    ref_genome = config["REF"]["gtf"],
+    strand = lambda _, input: open(input.strand_txt).read().strip()
   threads: 2
-  run:
-    with open(input.strand) as f:
-        strand = f.read().strip()
-
-    shell(f"""
+  shell:
+    """ 
     featureCounts \
     -T {threads} \
     -a {params.ref_genome} \
     -t exon \
     -g gene_id \
-    -s {strand}\
-    -o {output.counts} {' '.join(input.bams)}
-    """)
+    -s {params.strand} \
+    -o {output.counts} {input.bams}
+    """
+
 # cleans the sample identifiers and generates version of counts dataframes
 rule clean_counts:
   input:
@@ -196,17 +194,8 @@ rule clean_counts:
   script:
     "scripts/clean_counts.R"
 
-# establishes experiment's differentially expressed genes
-rule basic_differential_expression:
-  input:
-    "de_analysis/tpm_counts.csv"
-  output:
-    "de_analysis/basicContrasts_fullDEG_tpm_counts.csv",
-    "de_analysis/basicContrasts_sigDEG_tpm_counts.csv"
-  script:
-    "scripts/DEanalysis_basicContrasts.R"
-
-rule intersectional_differential_expression:
+# establishes DEGs for cross product set of experimental group contrasts
+rule differential_expression:
   input:
     "de_analysis/tpm_counts.csv"
   output:

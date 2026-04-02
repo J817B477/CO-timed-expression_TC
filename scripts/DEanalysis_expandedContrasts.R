@@ -9,7 +9,7 @@ suppressPackageStartupMessages({
   library(org.Hs.eg.db)
 })
 
-dir.create("de_analysis/expandedContrasts_plots-tables")
+dir.create("de_analysis/expandedContrasts_plots")
 ##############################################################
 #---- read in counts df and formats counts matrix object ----#
 ##############################################################
@@ -153,14 +153,14 @@ for(i in seq_len(ncol(contrast_pairs))){
                                   "not significant" = "grey")) +
     theme_minimal()
 
-  pdf_plot_name <- paste0("de_analysis/expandedContrasts_plots-tables/",
+  pdf_plot_name <- paste0("de_analysis/expandedContrasts_plots/",
                     contrast_name,
                     "_volcano_plot.pdf")
   pdf(pdf_plot_name, width = 7, height = 5)
   print(p)
   dev.off()
 
-  svg_plot_name <- paste0("de_analysis/expandedContrasts_plots-tables/",
+  svg_plot_name <- paste0("de_analysis/expandedContrasts_plots/",
                     contrast_name,
                     "_volcano_plot.svg")
   svg(svg_plot_name, width = 7, height = 5)
