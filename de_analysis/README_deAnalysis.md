@@ -25,4 +25,17 @@
     - this is not equivelant to WGCNA or related module detection workflows that are agnostic to experimental design; here experimental design is baked in
     - consists of normalized $log_{2}(fc)$ values for each contrast along with derived features relating genes to specific factors in the bench experiment.
     - it provides the dimensionsty measures used, upon which distance and correlation measures are performed providing the necessary similarity measures for hierarchical clustering
+1. Visuals:
+    - expandedContrasts_plots: directory of volcano plots for each 
+    
+    - sample distance heatmap:
+
+        ![sample_dist_heatmap.pdf](../de_analysis/sample_dist_heatmap.svg)
+
+    - sample distance pca plot:
+    
+        ![sample_dist_heatmap.pdf](../de_analysis/sample_dist_PCAplot.svg)
+        
+Plots indicate sufficient cohesion between replicates of each experimental group
+while also showing high separation. The most similar experimental groups are the the 4 hour  and 8 hour bi-treatment exposures. There is several instances of separation within experimental groups. High levels of inter-experimental group separation are seen in replicate 1 of the 8 hour bi-treatment group and in replicate 1 of the 24 hour CO group, as seen in its separation from the rest of this group in the dendrograms. The pca plot still shows that these groups account for the same variation in all of the counts data to a higher degree than the members of neighboring groups. There is significant overlap in the 24 hour control and 24 hour CO exposure groups with respect to the variance captures by pc1 and pc2. It is important to note that while these principle components account for the more variance than any additional principle component, they only account for a combined 37% of the variance in the data. 
     
