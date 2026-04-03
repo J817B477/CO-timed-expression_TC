@@ -10,3 +10,5 @@ strand/
 *.csv
 !de_analysis/*.csv
 de_analysis/expandedContrasts_AllTestData_tpm_counts.csv
+!overrepresented_sequences.csv
+!updated_sampleNames_map.csv
