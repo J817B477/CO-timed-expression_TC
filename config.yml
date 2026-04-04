@@ -34,4 +34,4 @@ GM_DIR: gm_analysis
 REF: 
   gtf: ~/genomeRefs/hg38/Homo_sapiens.GRCh38.113.gtf
   bed: ~/genomeRefs/hg38/Homo_sapiens.GRCh38.113.bed
-CONDA: CO-timed-expression
+CONDA: envs/pipeline.yaml

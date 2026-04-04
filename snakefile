@@ -4,8 +4,9 @@ configfile: "config.yml"
 # library dependencies
 import os
 
-# assigns sample identifiers from config file
+# assigns global level values from config file
 SAMPLES = config["SAMPLES"]
+workflow.default_conda = config["CONDA"]
 
 # target rule that drives the production of pipeline
 rule all:
